@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://amal.github.io/posts/debug-github-actions/</loc>
+    <lastmod>2021-09-11T21:37:02+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://amal.github.io/posts/</loc>
+    <lastmod>2021-09-11T21:37:02+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://amal.github.io/about/</loc>
+    <lastmod>2021-09-11T08:55:58+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://amal.github.io/</loc>
+    <lastmod>2021-09-11T08:55:58+10:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://amal.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://amal.github.io/tags/</loc>
+  </url>
+  
+</urlset>

